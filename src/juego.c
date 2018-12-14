@@ -41,6 +41,17 @@ int naveSpriteY=480;
 
 bool pausado=false;
 
+struct barrera {
+  int x;
+  int y;
+  int vida;
+}; 
+struct barrera b[4] = {
+              [0].x = 120, [0].y = 430, [0].vida = 3,
+              [1].x = 280, [1].y = 430, [1].vida = 3,
+              [2].x = 440, [2].y = 430, [2].vida = 3,
+              [3].x = 600, [3].y = 430, [3].vida = 3};
+
 void pausar(){
 
 	pausado=!pausado;
@@ -316,10 +327,20 @@ int dibujar_juego(sfRenderWindow* w){
     sfRenderWindow_drawText(w, gameover, NULL);
   }
 
-  sfRenderWindow_drawSprite(w, barrier1, NULL);
-  sfRenderWindow_drawSprite(w, barrier2, NULL);
-  sfRenderWindow_drawSprite(w, barrier3, NULL);
-  sfRenderWindow_drawSprite(w, barrier4, NULL);
+  if(b[0].vida > 0){
+    sfRenderWindow_drawSprite(w, barrier1, NULL);
+  }
+  if(b[1].vida > 0){
+    sfRenderWindow_drawSprite(w, barrier2, NULL);
+  }
+  if(b[2].vida > 0){
+    sfRenderWindow_drawSprite(w, barrier3, NULL);
+  }
+  if(b[3].vida > 0){
+    sfRenderWindow_drawSprite(w, barrier4, NULL);
+  }
+  
+ 
   sfRenderWindow_drawRectangleShape(w, c, NULL);
 
   sfSprite_setPosition(naveSprite, (sfVector2f){naveSpriteX, naveSpriteY});
@@ -388,13 +409,24 @@ int impacto_jugador(int x, int y) {
   return 0;
 }
 
-int impacto_barrera(float w, float h){
-
- 
-
-
-
+int impacto_barrera(int x, int y){
   
+  for(size_t i = 0; i < 4; ++i){
+    if(b[i].vida > 0){
+      if ((b[i].x < x) &&
+          (b[i].x+80 > x) &&
+          (b[i].y < y) &&
+          (b[i].y+80 > y)){
+
+          --b[i].vida;
+          return 1;
+
+        }
+    }
+  }
+
+  return 0;
+
 }
 
 int impacto_enemigo(int x, int y) {
@@ -511,12 +543,18 @@ int animacion_juego(sfRenderWindow* w) {
       break;
     if (balas_enemigas[i].activa == 1) {
       balas_enemigas[i].y += 20;
-      if (impacto_jugador(balas_enemigas[i].x, balas_enemigas[i].y)) {
-        vidas--;
+
+      // Actualiza la vida de las barreras, revisa si hubieron colisiones
+      if (impacto_barrera(balas_enemigas[i].x, balas_enemigas[i].y)){
         balas_enemigas[i].activa = 0;
         nbalas_enemigas--;
-        continue;
       }
+      else if (impacto_jugador(balas_enemigas[i].x, balas_enemigas[i].y)) {
+        vidas--;
+        balas_enemigas[i].activa = 0;
+        nbalas_enemigas--;      }
+
+      
       if (balas_enemigas[i].y > 480) {
         balas_enemigas[i].activa = 0;
         nbalas_enemigas--;
