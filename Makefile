@@ -18,7 +18,7 @@ PROGRAM=SpaceInvaders
 
 all: $(BINDIR)/$(PROGRAM)
 
-$(BINDIR)/$(PROGRAM): src/main.o src/inicio.o src/juego.o #src/scores.o
+$(BINDIR)/$(PROGRAM): src/main.o src/inicio.o src/juego.o src/scores.o
 	$(CC) -o $@ $^ $(LIBRARIES)
 
 clean:

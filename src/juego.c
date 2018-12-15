@@ -568,6 +568,10 @@ int animacion_juego(sfRenderWindow* w) {
 }
 
 enum pantallas eventos_juego(sfRenderWindow* w, sfEvent *e){
+  if(vidas == 0){
+    return RESULTADOS;
+  }
+
   if(e->type == sfEvtKeyPressed){
     switch(e->key.code){
       case sfKeyEscape:

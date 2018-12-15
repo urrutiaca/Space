@@ -33,9 +33,9 @@ int main(){
             case JUEGO:
               siguiente_pantalla = eventos_juego(w, &e);
               break;
-            // case RESULTADOS:
-            //   pantalla_actual = eventos_resultados(w, &e);
-            //   break;
+            case RESULTADOS:
+              pantalla_actual = eventos_resultados(w, &e);
+              break;
           }
 
           if (pantalla_actual != siguiente_pantalla) {
@@ -49,6 +49,9 @@ int main(){
                 reset_juego();
                 dibujar_juego(w);
                 dibujar_juego(w);
+                break;
+              case RESULTADOS:
+                dibujar_scores(w);
                 break;
             }
             pantalla_actual = siguiente_pantalla;
