@@ -50,7 +50,7 @@ enum pantallas eventos_resultados(sfRenderWindow* w, sfEvent *e){
 
 
 
-
+/*
 // we know the scores len is 100 and they are separated by a \n
 // the retunr lengght is always 10
 char* rscore(char* scores, int scoreLoc){
@@ -96,7 +96,7 @@ char* rscore(char* scores, int scoreLoc){
   
   return s;
 
-}
+}*/
 
 int dibujar_scores(sfRenderWindow* w3){
   sfVideoMode pj = {800, 600 , 32};
